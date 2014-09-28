@@ -3,6 +3,9 @@ import java.nio.file.FileSystems;
 import java.nio.file.Path;
 import java.nio.file.WatchService;
 import static java.nio.file.StandardWatchEventKinds.*;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.concurrent.TimeUnit;
 
 /*
@@ -21,23 +24,20 @@ public class main {
     public static void main(String[] args) {
 
         File folder = new File("/Users/marko/Dev/scriptit/");
-
         FolderMap folderMap = new FolderMap();
 
         for (;;) {
             try {
-                TimeUnit.SECONDS.sleep(1);            
+                TimeUnit.SECONDS.sleep(1);
             } catch (InterruptedException ex) {
                 Thread.currentThread().interrupt();
             }
-            
-            File[] listOfFiles = folder.listFiles();
-            for (File file : listOfFiles) {
-                if (!folderMap.contains(file)) {
-                    folderMap.fileAdded(file);
-                    System.out.println(file.toString());
-                }
-            }
+
+            HashSet<File> listOfFiles = new HashSet<>();
+            listOfFiles.addAll(Arrays.asList(folder.listFiles()));
+
+            folderMap.setFound(listOfFiles);
+            folderMap.compareFound();
         }
     }
 }
