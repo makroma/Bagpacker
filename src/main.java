@@ -3,6 +3,7 @@ import java.nio.file.FileSystems;
 import java.nio.file.Path;
 import java.nio.file.WatchService;
 import static java.nio.file.StandardWatchEventKinds.*;
+import java.util.concurrent.TimeUnit;
 
 /*
  * Aks copyright from the author Marko <markoma@iki.fi>.
@@ -24,6 +25,12 @@ public class main {
         FolderMap folderMap = new FolderMap();
 
         for (;;) {
+            try {
+                TimeUnit.SECONDS.sleep(1);            
+            } catch (InterruptedException ex) {
+                Thread.currentThread().interrupt();
+            }
+            
             File[] listOfFiles = folder.listFiles();
             for (File file : listOfFiles) {
                 if (!folderMap.contains(file)) {
